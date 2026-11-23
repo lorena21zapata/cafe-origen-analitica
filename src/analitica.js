@@ -32,10 +32,43 @@ const unidadesVendidas = (ventas) => {
     console.log(unidadesVendidas(ventas));
     
 const ventaMayor = (ventas) => {
-    let mayor = null
-    for (venta of ventas) {
-        if (venta === null || ventaValor > mayor )
-            mayor = ventaValor 
+    let mayor = null;
+    for (const venta of ventas) {
+        if (venta === null) continue;
+
+        if (mayor === null || valorVenta(venta) > valorVenta(mayor)) {
+            mayor = venta;
+        }
     }
-    return mayor
+
+    return mayor;
+};
+console.log("La venta más alta es: ", ventaMayor(ventas));
+
+const ticketPromedio = (ventas) => {
+    let total = 0;
+    let validas = 0; 
+    for (const venta of ventas) {
+        total = total + valorVenta(venta);
+        validas ++
+    }
+    return validas === 0 ? 0 : total / validas;
 }
+
+console.log(ticketPromedio(ventas));
+
+const ventasPorCiudad = (ventas, ciudad) => {
+    let buscada = ciudad.trim().toLowerCase();
+    let total = 0
+    for (const venta of ventas) {
+        let ciudadCorregida = venta.ciudad.trim().toLowerCase()
+        if ( ciudadCorregida === buscada) {
+        total = total + valorVenta(venta);
+      
+        }    
+    }
+      return total;
+}
+
+console.log ("Ventas por ciudad: " + ventasPorCiudad(ventas,"MEDELLÍN"));
+
