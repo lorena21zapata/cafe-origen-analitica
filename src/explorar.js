@@ -1,18 +1,8 @@
-let numeros = [5,3,8,1,-3]
-for (let i =0; i <numeros.length; i++){
+const ventas = require("./datos");
+console.log(ventas.length);
 
-    for (let j = 0; j< numeros.length-1; j++){
+console.log(ventas[0])
+console.log(ventas[ventas.length-1])
+console.log(ventas[4].producto)
 
-        if (numeros[j] > numeros[j+1]){
-
-            let temporal = numeros[j];
-
-            numeros[j] = numeros[j+1];
-
-            numeros[j+1] = temporal
-
-            console.log(numeros)
-
-        }
-    }
-}
+console.table(ventas)

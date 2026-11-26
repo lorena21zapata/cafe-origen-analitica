@@ -1,41 +1,28 @@
 const ventas = require("./datos");
-console.log(ventas.length);
-
-console.log(ventas[0])
-console.log(ventas[ventas.length-1])
-console.log(ventas[4].producto)
-
-console.table(ventas)
-
 const valorVenta = (venta) => venta.cantidad * venta.precio; 
 
-console.log(valorVenta(ventas[ventas.length-1]));
 
 
 const totalVendido = (ventas) => {
-    totalVentas = 0;
+    let totalVentas = 0;
     for (const venta of ventas ) {
         totalVentas = totalVentas + valorVenta(venta);
     }
 
     return totalVentas;
     }
-    console.log("El total vendido fue:" + totalVendido(ventas))
-    
+   
 const unidadesVendidas = (ventas) => {
     let unidadesTotales = 0
     for (const venta of ventas) {
-        unidadesTotales = unidadesTotales + venta.cantidad 
+        unidadesTotales = unidadesTotales + venta.cantidad; 
     }
     return unidadesTotales;
     }
-    console.log(unidadesVendidas(ventas));
-    
+
 const ventaMayor = (ventas) => {
     let mayor = null;
-    for (const venta of ventas) {
-        if (venta === null) continue;
-
+     for (const venta of ventas) {
         if (mayor === null || valorVenta(venta) > valorVenta(mayor)) {
             mayor = venta;
         }
@@ -43,32 +30,150 @@ const ventaMayor = (ventas) => {
 
     return mayor;
 };
-console.log("La venta más alta es: ", ventaMayor(ventas));
+
 
 const ticketPromedio = (ventas) => {
     let total = 0;
     let validas = 0; 
     for (const venta of ventas) {
+        if (venta.cantidad > 0) {
         total = total + valorVenta(venta);
-        validas ++
+        validas ++;
+        }
     }
     return validas === 0 ? 0 : total / validas;
 }
 
-console.log(ticketPromedio(ventas));
 
-const ventasPorCiudad = (ventas, ciudad) => {
-    let buscada = ciudad.trim().toLowerCase();
-    let total = 0
+function ventasPorCiudad(ventas, ciudad) {
+    const ciudadBuscada = ciudad.trim().toLocaleLowerCase("es-CO");
+    let total = 0;
+
     for (const venta of ventas) {
-        let ciudadCorregida = venta.ciudad.trim().toLowerCase()
-        if ( ciudadCorregida === buscada) {
-        total = total + valorVenta(venta);
-      
-        }    
+        const ciudadVenta = venta.ciudad.trim().toLocaleLowerCase("es-CO");
+
+        if (ciudadVenta === ciudadBuscada) {
+            total += valorVenta(venta);
+        }
     }
-      return total;
+
+    return total;
 }
 
-console.log ("Ventas por ciudad: " + ventasPorCiudad(ventas,"MEDELLÍN"));
+function totalVendidoM (ventas) {
+    return ventas.reduce((total, venta) => {
+        return total + valorVenta(venta);}, 0);
+}
 
+function unidadesVendidasM (ventas) {
+    return ventas.reduce((unidades, venta) => {
+        return unidades + venta.cantidad;}, 0);
+}
+
+
+const ventasPorCiudadM = (ventas) => {
+    const acumulador = {};
+
+    for (const venta of ventas) {
+        const ciudad = venta.ciudad.trim();
+        const clave = ciudad.toLowerCase();
+
+        if (acumulador[clave] === undefined) {
+            acumulador[clave] = {
+                ciudad: ciudad,
+                total: 0
+            };
+        }
+
+        acumulador[clave].total += valorVenta(venta);
+    }
+
+    return Object.values(acumulador);
+};
+
+
+
+
+function totalPorCiudad(ventas) {
+    return ventas.reduce((totales, venta) => {
+        const ciudad = venta.ciudad.trim().toLocaleLowerCase("es-CO");
+        const nombreCiudad = ciudad.replace(/^./u, letra => letra.toLocaleUpperCase("es-CO"));
+
+        if (totales[nombreCiudad] === undefined) {
+            totales[nombreCiudad] = 0;
+        }
+
+        totales[nombreCiudad] += valorVenta(venta);
+        return totales;
+    }, {});
+}
+
+function unidadesPorProducto(ventas) {
+
+    let acum = {};
+
+    for (const venta of ventas) {
+
+        if (acum[venta.producto] === undefined) {
+            acum[venta.producto] = 0;
+        }
+
+        acum[venta.producto] += venta.cantidad;
+    }
+
+    return acum;
+}
+
+function topProductosPorValor(ventas, k) {
+
+    let acum = {};
+
+
+    for (const venta of ventas) {
+
+        if (acum[venta.producto] === undefined) {
+            acum[venta.producto] = 0;
+        }
+
+        acum[venta.producto] += valorVenta(venta);
+    }
+
+
+    let productos = Object.entries(acum);
+
+
+    productos.sort((a, b) => b[1] - a[1]);
+
+
+    return productos.slice(0, k);
+}
+
+
+
+function ventasDelDia(ventas, fecha) {
+    return ventas.reduce((resumen, venta) => {
+        if (venta.fecha === fecha) {
+            resumen.cantidad += venta.cantidad;
+            resumen.valor += valorVenta(venta);
+        }
+
+        return resumen;
+    }, { cantidad: 0, valor: 0 });
+}
+
+
+module.exports = {
+    valorVenta,
+    totalVendido,
+    totalVendidoM,
+    unidadesVendidas,
+    unidadesVendidasM,
+    ventasPorCiudad,
+    ventasPorCiudadM,
+    ventaMayor,
+    ticketPromedio,
+    totalPorCiudad,
+    unidadesPorProducto,
+    topProductosPorValor,
+    ventasDelDia
+};
