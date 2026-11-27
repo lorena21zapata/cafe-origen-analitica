@@ -1,40 +1,28 @@
-const ventas = require('./datos');
-
-const {
-    totalVendido,
-    totalVendidoM,
-    unidadesVendidas,
-    unidadesVendidasM,
-    ventasPorCiudad,
-    ventasPorCiudadM
-} = require('./analitica');
+const ventas = require("./datos");
+const analitica = require("./analitica");
 
 
-const totalCiclo = totalVendido(ventas);
-const totalMetodo = totalVendidoM(ventas);
-
-if (totalCiclo === totalMetodo) {
-    console.log("Total vendido: OK");
-} else {
-    console.log("Total vendido: DIFERENTE");
+function comparar (nombreIndicador, resulCiclo, resulMetodo){
+  const sonIguales = JSON.stringify (resulCiclo) === JSON.stringify (resulMetodo);
+  const veredicto = sonIguales ? "OK" : "DIFERENTE";
+  console.log(`${nombreIndicador}: ${veredicto}`)
 }
 
-const unidadesCiclo = unidadesVendidas(ventas);
-const unidadesMetodo = unidadesVendidasM(ventas);
 
+comparar(
+  "Total vendido",
+  analitica.totalVendido(ventas),
+  analitica.totalVendidoM(ventas)
+)
 
-if (unidadesCiclo === unidadesMetodo) {
-    console.log("Unidades vendidas: OK");
-} else {
-    console.log("Unidades vendidas: DIFERENTE");
-}
+comparar(
+  "Unidades Vendidas",
+  analitica.unidadesVendidas(ventas),
+  analitica.unidadesVendidasM(ventas)
+)
 
-const ventasCiudadCiclo = VentasCiudad(ventas);
-const ventasCiudadMetodo = ventasPorCiudadM(ventas);
-
-
-if (ventasCiudadCiclo === ventasCiudadMetodo) {
-    console.log("Ventas por ciudad: OK");
-} else {
-    console.log("Ventas por ciudad: DIFERENTE");
-}
+comparar(
+  "Ventas por ciudad",
+  analitica.ventasPorCiudad(ventas, "Medellín"),
+  analitica.ventasPorCiudadM(ventas,  "Medellín")
+)

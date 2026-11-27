@@ -94,15 +94,15 @@ const ventasPorCiudadM = (ventas) => {
 
 
 
-function totalPorCiudad(ventas) {
+function totalPorCiudad(ventas, ) {
     return ventas.reduce((totales, venta) => {
         const ciudad = venta.ciudad.trim().toLocaleLowerCase("es-CO");
         const nombreCiudad = ciudad.replace(/^./u, letra => letra.toLocaleUpperCase("es-CO"));
-
+         
         if (totales[nombreCiudad] === undefined) {
             totales[nombreCiudad] = 0;
         }
-
+      
         totales[nombreCiudad] += valorVenta(venta);
         return totales;
     }, {});
@@ -161,6 +161,65 @@ function ventasDelDia(ventas, fecha) {
     }, { cantidad: 0, valor: 0 });
 }
 
+ function totalVendidoInstrumentado(ventas, contadorTotal) {
+    let total = 0
+    for (const venta of ventas) {
+        total += valorVenta(venta)
+        contadorTotal.operaciones++
+    }
+    return total 
+ }
+
+ function ventaMayorInstrumentada(ventas, contadorMayor) {
+    let mayor = null
+    for (const venta of ventas) {
+        contadorMayor.operaciones++; // Visitar una venta
+        contadorMayor.operaciones++; // Comprobar si mayor es null
+
+        if (mayor === null) {
+            mayor = venta;
+        } else {
+            contadorMayor.operaciones++; // Comparar los valores
+
+            if (valorVenta(venta) > valorVenta(mayor)) {
+                mayor = venta;
+            }
+        }
+    }
+
+    return mayor;
+}
+
+function totalPorCiudadInstrumentada (ventas, contadorPorCiudad) {
+    return ventas.reduce ((totales, venta) => {
+        contadorPorCiudad.operaciones++;
+
+        const ciudad = venta.ciudad.trim().toLocaleLowerCase("es-CO");
+        const nombreCiudad = ciudad.replace(/^./u, letra => letra.toLocaleUpperCase("es-CO"));
+
+        contadorPorCiudad.operaciones++;
+
+        if (totales[nombreCiudad] === undefined) {
+            totales[nombreCiudad] = 0;
+        }
+
+        totales[nombreCiudad] += valorVenta(venta);
+
+        return totales;
+    }, {});
+}
+
+function primeraVentaInstrumentada(ventas, contadorPrimera) {
+    contadorPrimera.operaciones++;
+
+    if (ventas.length === 0) {
+        return null;
+    }
+
+    contadorPrimera.operaciones++;
+    return ventas[0];
+}
+
 
 module.exports = {
     valorVenta,
@@ -175,5 +234,9 @@ module.exports = {
     totalPorCiudad,
     unidadesPorProducto,
     topProductosPorValor,
-    ventasDelDia
+    ventasDelDia,
+    totalVendidoInstrumentado,
+    ventaMayorInstrumentada,
+    totalPorCiudadInstrumentada,
+    primeraVentaInstrumentada,
 };

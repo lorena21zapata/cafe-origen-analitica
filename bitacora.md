@@ -172,3 +172,28 @@ Prueba realizada: ejecutar node reporte.js con los archivos recibidos.
 Causa confirmada: dentro de ventasPorCiudad, la variable ciudad queda como undefined y se intenta ejecutar ciudad.trim().
 
 Corrección propuesta: si el reporte necesita todas las ciudades, debe llamar a una función de agrupación como ventasPorCiudadM(ventas) o totalPorCiudad(ventas), después de unificar el nombre y exportar correctamente esa función. Si necesita una ciudad específica, debe pasar el segundo argumento.
+
+
+Mini Reto 5
+si n se multiplica por 10, ¿cuánto se multiplica el número de operaciones de cada función?
+R/= Se aumenta 10 veces las operaciones, a excepción de mayorventa y totalporciudad que tiene operaciones adicionales por el tema de las comparaciones. 
+
+La complejidad O(n) representa un crecimiento proporcional al número de elementos que recibe una función. A medida que aumenta la cantidad de datos que debe recorrer, aumenta también el número de operaciones.
+
+Por otro lado, O(1) representa una complejidad constante: la cantidad de operaciones no depende del tamaño del arreglo. En el caso de `primeraVenta`, se accede directamente al primer elemento mediante `ventas[0]`, sin recorrer los demás registros.
+
+Comparación de predicciones y resultados
+
+Se esperaba que, al multiplicar por 10 la cantidad de ventas, las operaciones de las funciones con complejidad O(n) también aumentaran aproximadamente 10 veces. Para la función O(1), se esperaba que el número de operaciones permaneciera constante.
+
+Las mediciones confirmaron la predicción:
+
+totalVendidoInstrumentado: pasó de 100 a 1.000 operaciones al pasar de 100 a 1.000 ventas.
+
+ventaMayorInstrumentado: pasó de 299 a 2.999 operaciones.
+
+totalPorCiudadInstrumentado: pasó de 200 a 2.000 operaciones.
+
+primeraVentaInstrumentada: permaneció en 2 operaciones.
+
+Las tres primeras funciones presentan complejidad temporal O(n), porque su trabajo crece proporcionalmente al tamaño del arreglo. primeraVentaInstrumentada presenta complejidad O(1), porque su número de operaciones permanece constante.
