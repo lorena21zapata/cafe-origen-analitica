@@ -197,3 +197,66 @@ totalPorCiudadInstrumentado: pasó de 200 a 2.000 operaciones.
 primeraVentaInstrumentada: permaneció en 2 operaciones.
 
 Las tres primeras funciones presentan complejidad temporal O(n), porque su trabajo crece proporcionalmente al tamaño del arreglo. primeraVentaInstrumentada presenta complejidad O(1), porque su número de operaciones permanece constante.
+
+Minireto 6 
+Traza manual 
+const ventasPrueba = [
+    { cliente: "C01" },
+    { cliente: "C02" },
+    { cliente: "C01" },
+    { cliente: "C03" },
+    { cliente: "C02" }
+];
+1. i = 0  j= 1 = "C01" vs "C02" recurrentes []
+2. i = 0  j=2 = "C01" vs "C01" recuerrentes ["C01",]
+3. i = 0  j=3 = "C01" vs "C03" recuerrentes ["C01",]
+4. i = 0  j=4 = "C01" vs "C02" recuerrentes ["C01",]
+5. i = 1  j=2 = "C02" vs "C01" recuerrentes ["C01",]
+6. i = 1  j=3 = "C02" vs "C03" recuerrentes ["C01",]
+7. i = 1  j=4 = "C02" vs "C02" recuerrentes ["C01", "C02",]
+8. i = 2  j=3 = "C01" vs "C03" recuerrentes ["C01", "C02",]
+9. i = 2  j=4 = "C01" vs "C02" recuerrentes ["C01", "C02",]
+10. i = 3 j=4 = "C03" vs "C02" recurrentes  ["C01", "C02"]
+
+El algoritmo realizó las siguientes comparaciones:
+
+Primera iteración (i = 0): 4 comparaciones.
+
+Segunda iteración (i = 1): 3 comparaciones.
+
+Tercera iteración (i = 2): 2 comparaciones.
+
+Cuarta iteración (i = 3): 1 comparación.
+
+Quinta iteración (i = 4): 0 comparaciones.
+
+Total: 10 comparaciones.
+
+El resultado obtenido fue ["C01", "C02"], ya que ambos clientes aparecen más de una vez.
+
+Se observa que el número de comparaciones disminuye en cada iteración del ciclo externo. Para cinco ventas se realizan 4 + 3 + 2 + 1 = 10 comparaciones.
+
+
+tabla de medición de tiempo 
+prueba-1000: 14.126ms
+prueba-2000: 34.388ms
+prueba-4000: 168.035ms
+prueba-8000: 541.483ms
+prueba-16000: 2.679s
+
+Los resultados muestran que el tiempo de ejecución aumenta a medida que se duplica la cantidad de ventas. Aunque el incremento no es exactamente igual en todas las pruebas, se observa una tendencia cercana al crecimiento cuadrático O(n²).
+
+Esto se debe a que la función utiliza dos ciclos anidados para comparar los clientes de las ventas. Por tanto, cuando aumenta el volumen de datos, también aumenta considerablemente la cantidad de comparaciones que debe realizar el algoritmo.
+
+Ventas	Tiempo estimado
+100.000	104.65 segundos (1.74 min)
+1.000.000	10.464.84 segundos (2.91 horas)
+
+La función includes() realiza una búsqueda secuencial dentro del arreglo recurrentes. Esto significa que, además de las comparaciones realizadas por los ciclos anidados, se pueden efectuar búsquedas adicionales para comprobar si un cliente ya fue registrado.
+
+En el peor caso, estas búsquedas recorren una parte importante del arreglo, aumentando el trabajo que debe realizar la función y empeorando su rendimiento.
+El reporte funciona correctamente cuando se procesa una cantidad pequeña de ventas. Sin embargo, a medida que aumenta el volumen de información, el tiempo necesario para identificar a los clientes recurrentes también crece considerablemente.
+
+Esto ocurre porque el sistema debe comparar los clientes de diferentes ventas y verificar repetidamente si ya fueron identificados. Por esta razón, procesar una cantidad mucho mayor de registros puede provocar demoras importantes en la generación de los reportes.
+
+En consecuencia, si el negocio continúa aumentando sus ventas, será necesario optimizar este proceso para evitar que los tiempos de espera afecten la consulta y el análisis de la información.
