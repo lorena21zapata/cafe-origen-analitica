@@ -4,7 +4,8 @@ const {
     totalVendidoInstrumentado,
     ventaMayorInstrumentada,
     totalPorCiudadInstrumentada,
-    primeraVentaInstrumentada
+    primeraVentaInstrumentada,
+    clientesRecurrentes,
 } = require("./analitica");
 const ventas = require("./datos.js")
 
@@ -27,7 +28,7 @@ console.table({
 
 const muestra = [100, 1000, 10000, 100000];
 
-
+/*
 for (const n of muestra) {
     const ventas = generarVentas(n); 
     const contadorTotal = { operaciones: 0 };
@@ -46,6 +47,22 @@ for (const n of muestra) {
     totalPorCiudad: contadorPorCiudad.operaciones,
     primeraVenta: contadorPrimera.operaciones,
 });
+} */
+
+
+const arregloPrueba = generarVentas(16000);
+
+console.time("prueba-1000");
+clientesRecurrentes(arregloPrueba);
+console.timeEnd("prueba-1000");
+
+
+const cantidades = [1000, 2000, 4000, 8000, 16000, 100000];
+
+for (const n of cantidades) {
+    const ventasPrueba = generarVentas(n);
+
+    console.time(`prueba-${n}`);
+    clientesRecurrentes(ventasPrueba);
+    console.timeEnd(`prueba-${n}`);
 }
-
-
