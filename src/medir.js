@@ -6,6 +6,8 @@ const {
     totalPorCiudadInstrumentada,
     primeraVentaInstrumentada,
     clientesRecurrentes,
+    totalCiudadUnaPasada,
+    totalCiudadCadena,
 } = require("./analitica");
 const ventas = require("./datos.js")
 
@@ -57,7 +59,7 @@ clientesRecurrentes(arregloPrueba);
 console.timeEnd("prueba-1000");
 
 
-const cantidades = [1000, 2000, 4000, 8000, 16000, 100000];
+const cantidades = [1000, 2000, 4000, 8000, 16000];
 
 for (const n of cantidades) {
     const ventasPrueba = generarVentas(n);
@@ -66,3 +68,15 @@ for (const n of cantidades) {
     clientesRecurrentes(ventasPrueba);
     console.timeEnd(`prueba-${n}`);
 }
+
+const pruebaCiudad = generarVentas(10000);
+
+const resultadoCadena = totalCiudadCadena(pruebaCiudad, "Medellín");
+const resultadoUnaPasada = totalCiudadUnaPasada(pruebaCiudad, "Medellín");
+
+console.log("Cadena:", resultadoCadena);
+console.log("Una pasada:", resultadoUnaPasada);
+
+console.log(
+    resultadoCadena === resultadoUnaPasada ? "OK" : "DIFERENTE"
+);
